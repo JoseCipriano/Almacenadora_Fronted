@@ -29,3 +29,17 @@ export const register = async (data) => {
         
     }
 }
+
+export const getCategorys = async () => {
+    try {
+        return await apiClient.get('/categories/')
+    } catch (e) {
+        return {
+            error: true,
+            e
+        }
+        
+    }
+
+
+}

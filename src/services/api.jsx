@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: 'http://localhost:3001/Almacenadora_app/v1',
+    baseURL: 'http://localhost:3000/Almacenadora_app/v1',
     timeout: 5000,
 
 })

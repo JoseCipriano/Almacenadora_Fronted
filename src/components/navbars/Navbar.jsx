@@ -42,7 +42,7 @@ export const Navbar = () => {
     }
 
     const handleNavigateToProductsPage = () => {
-        navigate('/products');
+        navigate('/product');
     }
     
     const handleNavigateToCategoryPage = () => {
@@ -58,7 +58,7 @@ export const Navbar = () => {
         <div className="nav-container">
             <NavLogo/>
             <div className="nav-buttons-container">
-                <NavButton text = "Almacenadora App" onClickHandler={handleNavigateToProductsPage}/>
+                <NavButton text = "Almacenadora App" />
                 {!isLogged ? (
                     <NavButton text = "Login" onClickHandler={handleNavigateToAuthPage}/>
                 ):(
@@ -66,6 +66,7 @@ export const Navbar = () => {
                         <NavButton text = "My Account" onClickHandler={handleNavigateToSettingsPage}/>
                         <NavButton text = "Logout" onClickHandler={handleLogout}/>
                         <NavButton text = "Category" onClickHandler={handleNavigateToCategoryPage}/>
+                        <NavButton text = "Product" onClickHandler={handleNavigateToProductsPage} />
                     </div>
                 )}
                 

@@ -1,6 +1,5 @@
 
 
-
 .auth-container {
     width: 100%;
     height: 100vh;
@@ -11,21 +10,23 @@
 }
  
 .login-container, .register-container {
+    color: #000000;
+    background-color: #EAE9E7;
     width: 500px;
     margin: 0 auto;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 1px solid #794515;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
     height: auto;
-    box-shadow: 10px 10px 10px #0b336b;
+    box-shadow: 10px 10px 10px #DAAD29;
     padding: 25px;
 }
  
 .register-container {
-    height: 500px;
+    height: px;
 }
  
 .auth-form {
@@ -36,6 +37,9 @@
 }
  
 .auth-form input {
+    background-color: white;
+    color: #000000;
+    border-radius: 10px;
     margin: 5px 0;
     padding: 5px;
     width: 400px;
@@ -69,12 +73,18 @@
 }
  
 .auth-form-logo-container {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.auth-form-logo-container img {
+    width: 10%;
     font-size: 26px;
     font-weight: bold;
 }
  
 .auth-form-switch-label {
-    color: #2b7df0;
+    color: #000000;
     font-weight: bold;
     font-size: 14px;
     transition: 0.3s;

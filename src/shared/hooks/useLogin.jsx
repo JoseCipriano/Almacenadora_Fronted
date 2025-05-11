@@ -6,15 +6,11 @@ import toast from "react-hot-toast";
 export const useLogin = () => {
 
     const [isLoading, setIsLoading] = useState(false);
-
     const navigate = useNavigate();
 
     const login = async (email, password) => {
-
         setIsLoading(true);
-
         const response = await loginRequest({email, password})
-
         setIsLoading(false);
 
         console.log(response)

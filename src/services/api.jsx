@@ -317,7 +317,7 @@ export const {
   getClients, createClient, updateClient, deleteClient
 } = clientService;
 
-// Exporta el objeto completo si lo necesitas
+
 export const api = {
   ...authService,
   ...categoryService,

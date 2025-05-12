@@ -1,25 +1,29 @@
-import { useState } from "react";
-import { logout as logOutHandler  } from "./userLogOut";
+import { useState, useEffect } from 'react';
+import { getCurrentUser } from '../../services/api';
 
-const getUserDetails = () => {
-    const userDetails = localStorage.getItem("user");
-    if (userDetails) {
-        return JSON.parse(userDetails);
-    }else {
-        return null
-    }
-}
+export function useUserDetails() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-
-export const useUserDetails = () => {
-    const [userDetails, setUserDetails] = useState(getUserDetails());
-    const logout = () => {
-        logOutHandler();
+  useEffect(() => {
+    const loadUserDetails = async () => {
+      try {
+        const userData = getCurrentUser();
+        if (userData) {
+          setUser(userData);
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    return { 
-        isLogged: Boolean(userDetails),
-        username: userDetails?.username ? userDetails.username : 'Guest',
-        logout
-    };
+    loadUserDetails();
+  }, []);
+
+  return { user, loading, error };
 }
+
+export default useUserDetails;

@@ -1,201 +1,107 @@
-import { useState } from "react";
-import { Logo } from "./Logo";
-import  { Input } from "./Input";
-import {
-    validateUsername,
-    validateEmail,
-    validatePassword,
-    validateConfirPassword,
-    validateUsernameMessage,
-    emailValidationMessage,
-    validatePasswordMessage,
-    passwordConfirmationMessage,
-} from '../shared/validators'
+import React, { useState } from "react";
+import useRegister from "../shared/hooks/useRegister/useRegister.jsx"; // Importación default
+import PropTypes from "prop-types";
+import "./Register.css";
 
-import { useRegister } from "../shared/hooks";
+export default function Register({ switchAuthHandler }) {
+  const { register, isLoading } = useRegister();
+  const [userData, setUserData] = useState({
+    name: "",
+    username: "",
+    email: "",
+    password: "",
+    phone: "",
+    role: "CLIENT",
+  });
+  const [profilePicture, setProfilePicture] = useState(null);
 
-export const Register = ({switchAuthHandler}) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = {
+      ...userData,
+      profilePicture
+    };
 
-    const {register , isLoading} = useRegister()
-
-    const [formState, setFormState] = useState({
-        name:{
-            value: '',
-            isValid: false,
-            showError: false,
-        },
-        
-       username: {
-            value: '',
-            isValid: false,
-            showError: false,
-       }, 
-       email:{
-            value: '',
-            isValid: false,
-            showError: false,
-       }, 
-       password:{
-            value: '',
-            isValid: false,
-            showError: false,
-       },
-       passwordConfir: {
-            value: '',
-            isValid: true,
-            showError: false,
-       },
-       phone:{
-        value: '',
-        isvalid: false , 
-        showError: false,
-
-       },
-       role: {
-        value: '',
-        isvalid: false , 
-        showError: false,
-
-       }
-
-    })
-
-    const handleInputValueChange = (value , field) => {
-        setFormState((prevState) => ({
-            ...prevState, 
-            [field]: {
-                ...prevState[field], 
-                value
-            }
-        }));
-
+    const success = await register(formData);
+    if (success) {
+      switchAuthHandler();
     }
+  };
 
-    const handleInputValidationOnBlur = (value, field) => {
-        let isValid = false;
-        switch (field) {
-            case 'email':
-                isValid = validateEmail(value);
-                break;
-            case 'username':
-                isValid = validateUsername(value);
-                break;
-            case 'password':
-                isValid = validatePassword(value);
-                break;
-            case 'passwordConfir':
-                isValid = validateConfirPassword(formState.password.value, value);
-                break;
-            default:
-                break;
-        }
-        setFormState((prevState) =>({
-            ...prevState, 
-            [field]: {
-                ...prevState[field], 
-                isValid, 
-                showError: !isValid
-            }
-        }));
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfilePicture(file);
     }
+  };
 
-    const handleRegister = (event) => {
-        event.preventDefault();
-        register(formState.email.value, formState.password.value, formState.username.value, formState.name.value, formState.phone.value, formState.role.value);
-    }
-
-    const isSubmitButtonDisabled = isLoading ||
-     !formState.email.isValid || 
-     !formState.password.isValid || 
-     !formState.passwordConfir.isValid ||
-     !formState.username.isValid || 
-     !formState.name.isValid || 
-     !formState.phone.isvalid || 
-     !formState.role.isvalid;
-     
-     //renderizar el componente de registro
-
-
-     return (
-        <div className = "register-container">
-            <Logo text = {"Almacenadora Register"}/>
-            <form className="auth-form">
-                <Input 
-                field = 'name'
-                label = 'Nombre'
-                value = {formState.name.value}
-                onChangeHandler={handleInputValueChange}
-                type = 'text'
-                onBlurHandler = {handleInputValidationOnBlur}
-                showErrorMessage={formState.name.showError}
-                 />
-                 <Input 
-                field = 'username'
-                label = 'Username'
-                value = {formState.username.value}
-                onChangeHandler={handleInputValueChange}
-                type = 'text'
-                onBlurHandler = {handleInputValidationOnBlur}
-                showErrorMessage={formState.username.showError}
-                validationMessage={validateUsernameMessage}
-             />
-             <Input 
-                field = 'email'
-                label = 'Email'
-                value = {formState.email.value}
-                onChangeHandler={handleInputValueChange}
-                type = 'text'
-                onBlurHandler = {handleInputValidationOnBlur}
-                showErrorMessage={formState.email.showError}
-                validationMessage={emailValidationMessage}
-                 />
-             <Input 
-                field = 'password'
-                label = 'Password'
-                value = {formState.password.value}
-                onChangeHandler={handleInputValueChange}
-                type = 'password'
-                onBlurHandler = {handleInputValidationOnBlur}
-                showErrorMessage={formState.password.showError}
-                validationMessage={validatePasswordMessage}
-             />
-            <Input
-                    field='passwordConfir'
-                    label='Password Confirmation'
-                    value={formState.passwordConfir.value}
-                    onChangeHandler={handleInputValueChange}
-                    type='password'
-                    onBlurHandler={handleInputValidationOnBlur}
-                    showErrorMessage={formState.passwordConfir.showError}
-                    validationMessage={passwordConfirmationMessage}
-                />
-             <Input 
-                field = 'phone'
-                label = 'Number Phone'
-                value = {formState.phone.value}
-                onChangeHandler={handleInputValueChange}
-                type = 'text'
-                onBlurHandler = {handleInputValidationOnBlur}
-                showErrorMessage={formState.phone.showError}
-             />
-             <Input 
-                field = 'role'
-                label = 'Role'
-                value = {formState.role.value}
-                onChangeHandler={handleInputValueChange}
-                type = 'text'
-                onBlurHandler = {handleInputValidationOnBlur}
-                showErrorMessage={formState.role.showError}
-             />
-             <button onClick={handleRegister} >
-                Register
-
-             </button>
-
-            </form>
-            <span onClick={switchAuthHandler} className="auth-form-switch-label">
-                Already have an account? Sign up
-            </span>
-        </div>
-     )
+  return (
+    <div className="auth-form-container">
+      <h2>Registro</h2>
+      <form onSubmit={handleSubmit} className="auth-form">
+        <input
+          type="text"
+          placeholder="Nombre"
+          value={userData.name}
+          onChange={(e) =>
+            setUserData((prev) => ({ ...prev, name: e.target.value }))
+          }
+          required
+        />
+        <input
+          type="text"
+          placeholder="Usuario"
+          value={userData.username}
+          onChange={(e) =>
+            setUserData((prev) => ({ ...prev, username: e.target.value }))
+          }
+          required
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          value={userData.email}
+          onChange={(e) =>
+            setUserData((prev) => ({ ...prev, email: e.target.value }))
+          }
+          required
+        />
+        <input
+          type="password"
+          placeholder="Contraseña"
+          value={userData.password}
+          onChange={(e) =>
+            setUserData((prev) => ({ ...prev, password: e.target.value }))
+          }
+          required
+        />
+        <input
+          type="tel"
+          placeholder="Teléfono (8 dígitos)"
+          value={userData.phone}
+          onChange={(e) =>
+            setUserData((prev) => ({ ...prev, phone: e.target.value }))
+          }
+          pattern="\d{8}"
+          required
+        />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          className="file-input"
+        />
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? "Registrando..." : "Registrarse"}
+        </button>
+      </form>
+      <button onClick={switchAuthHandler} className="switch-auth-btn">
+        ¿Ya tienes cuenta? Inicia sesión
+      </button>
+    </div>
+  );
 }
+
+Register.propTypes = {
+  switchAuthHandler: PropTypes.func.isRequired,
+};

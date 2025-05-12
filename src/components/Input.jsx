@@ -1,58 +1,53 @@
+import React from 'react';
 
-export const  Input = ({
-
-    field , 
-    label , 
-    value, 
+function Input({
+    field,
+    label,
+    value,
     onChangeHandler,
-    type, 
+    type,
     showErrorMessage,
     validationMessage,
     onBlurHandler,
     textArea,
-
-}) => {
+}) {
     const handleValueChange = (event) => {
-        onChangeHandler(event.target.value, field )
-       
-    }
+        onChangeHandler(event.target.value, field);
+    };
 
     const handleInputBlur = (event) => {
-        onBlurHandler(event.target.value, field )
-    }
+        onBlurHandler(event.target.value, field);
+    };
 
     return (
         <>
-                <div className="auth-form-label">
-                    <span>{label}</span>
-                </div>
-                <div>
-                    {textArea ? (
-                        <textArea
-                        type = {type}
-                        value = {value}
-                        onChange = {handleValueChange}
-                        onBlur = {handleInputBlur}
-                        rows = {5}
-                        style = {{maxwidth: '400px'}}
-                        
-                        />
-                    ) : (
-                        <input
-                            type = {type}
-                            value = {value}
-                            onChange = {handleValueChange}
-                            onBlur = {handleInputBlur}
-                        
-                        />
-                    )}
-
-                    <span  className="auth-form-validation-message">
-                        {showErrorMessage && validationMessage}
-
-                    </span>
-                </div>
+            <div className="auth-form-label">
+                <span>{label}</span>
+            </div>
+            <div>
+                {textArea ? (
+                    <textarea
+                        type={type}
+                        value={value}
+                        onChange={handleValueChange}
+                        onBlur={handleInputBlur}
+                        rows={5}
+                        style={{maxWidth: '400px'}}
+                    />
+                ) : (
+                    <input
+                        type={type}
+                        value={value}
+                        onChange={handleValueChange}
+                        onBlur={handleInputBlur}
+                    />
+                )}
+                <span className="auth-form-validation-message">
+                    {showErrorMessage && validationMessage}
+                </span>
+            </div>
         </>
-    )
-
+    );
 }
+
+export { Input };

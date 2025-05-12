@@ -1,0 +1,8 @@
+/* src/pages/providers/Providers.css */
+.providers-page {
+  max-width: 1024px;
+  margin: 0 auto;
+}
+.stat-card h2 {
+  margin-bottom: 8px;
+}

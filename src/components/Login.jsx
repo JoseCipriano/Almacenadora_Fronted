@@ -8,6 +8,7 @@ import {
     validatePasswordMessage
 } from '../shared/validators'
 import { useLogin } from '../shared/hooks'
+import { LoadingSpinner } from "./LoadingSpinner";
 
  export const Login = ({ switchAuthHandler}) => {
 
@@ -66,6 +67,7 @@ import { useLogin } from '../shared/hooks'
         login(formState.email.value, formState.password.value);
 
     }
+    
 
     const isSubmitButtonDisabled = isLoading || !formState.email.isValid || !formState.password.isValid;
 

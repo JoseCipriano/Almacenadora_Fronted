@@ -67,6 +67,7 @@ export const Navbar = () => {
                         <NavButton text = "Logout" onClickHandler={handleLogout}/>
                         <NavButton text = "Category" onClickHandler={handleNavigateToCategoryPage}/>
                         <NavButton text = "Products" onClickHandler={handleNavigateToProductsPage}/>
+                        
                     </div>
                 )}
                 

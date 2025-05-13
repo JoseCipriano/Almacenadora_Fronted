@@ -5,6 +5,8 @@ import  { Product } from './pages/product'
 import  {ProfilePage} from './pages/profile/ProfilePage.jsx'
 import  {UserPage} from './pages/user/userPage.jsx'
 import  {UserCard} from './components/user/UserCard.jsx'
+import  { DashboardPageAdmin} from './pages/dashboardAdmin'
+import  { DashboardPageEmpleado} from './pages/dashboardEmpleado'
 
 
 const routes = [
@@ -14,7 +16,9 @@ const routes = [
     {path : '/products', element : <Product/>},
     {path : '/profile', element : <ProfilePage/>},
     {path : '/users-management', element: <UserPage/>},
-    {path : '/users-management/:uid', element: <UserCard/>}
+    {path : '/users-management/:uid', element: <UserCard/>},
+    {path : '/dashboardAdmin', element: <DashboardPageAdmin/>},
+    {path : '/dashboardEmpleado', element: <DashboardPageEmpleado/> }
 
  
 

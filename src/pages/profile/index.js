@@ -1,1 +1,1 @@
-export { ProfilePage } from "./ProfilePage";
+import { ProfilePage } from "./ProfilePage";

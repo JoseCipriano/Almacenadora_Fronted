@@ -1,12 +1,6 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import { FaPlus, FaEdit, FaTrash, FaSearch, FaSync } from 'react-icons/fa';
 import './Product.css';
-=======
-import { useState } from "react";
-import { Navbar } from "../../components/navbars/Navbar";
-import ProductList from "../../components/products/ProductList.jsx";
->>>>>>> 34e0fd5c9b5d8c4ac5065f3e1a957fbd10e64259
 
 const Product = () => {
   const [currentDateTime] = useState('2025-05-11 01:02:08');

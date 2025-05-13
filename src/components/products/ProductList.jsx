@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
 import {
   Table,
@@ -24,6 +25,81 @@ export default function ProductList({ onEdit }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+=======
+import { Table, TableHead, TableRow, TableCell, TableBody, Button, Paper, Typography, TextField, Box} from "@mui/material"
+import { useEffect, useState} from "react"
+import { useNavigate } from "react-router-dom"
+import { deleteProduct, getProducts } from "../../services/product-service"
+
+export default function ProductList(){
+    const [products, setProducts] = useState([]);
+    const [filteredProducts, setFilterProducts] = useState([]);
+    const [ searchTerm, setSearchTerm ] = useState( ' ');
+    const navigate = useNavigate();
+    const [isAdmin] = useState(true);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            const response = await getProducts();
+            if(Array.isArray(response)){
+                setProducts(response);
+                setFilterProducts(response);
+            }else{
+                console.error("Error al cargar Productos:", response);
+            }
+         };
+         fetchProducts();
+        
+        }, []);
+
+        useEffect(() => {
+            if (searchTerm.trim()) {  //
+              const searchTermLower = searchTerm.toLowerCase();
+              const results = products.filter(product => {
+                if (!product) return false
+                return (
+                  (product.nameProduct && product.name.toLowerCase().includes(searchTermLower)) &&
+                  (product.category && product.category.toLowerCase().includes(searchTermLower)) &&
+                  (product.stock && product.price.toString().includes(searchTerm))
+                );
+              });
+              
+              setFilterProducts(results);
+            } else {
+              setFilterProducts(products); 
+            }
+        }, [searchTerm, products]);
+
+        const handleDelete =async (id) => {
+            const confirm = window.confirm("Quieres eliminar este producto?");
+            if(!confirm) return;
+            try {
+                await deleteProduct(id);
+                setFilterProducts((prev) => prev.filter((p) => p.id !== id));      
+            } catch (error) {
+                alert("Error al eliminar el producto");
+                console.error(error);
+          }
+ };
+
+    return(
+        <Paper
+        elevation={4}
+        sx={{
+          mt: 4,
+          mx: "auto",
+          maxWidth: 1000,
+          p: 4,
+          background: "linear-gradient(to top, #f9f9f9, #ffffff)"
+        }}
+      >
+        {/* Encabezado y botón de regreso */}
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
+          <Typography variant="h4" color="primary">
+            Lista de Productos
+          </Typography>
+        </Box>
+>>>>>>> 34e0fd5c9b5d8c4ac5065f3e1a957fbd10e64259
   
   // Obtener el rol del usuario del localStorage
   const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -144,6 +220,7 @@ export default function ProductList({ onEdit }) {
             ))
           ) : filteredProducts.length === 0 ? (
             <TableRow>
+<<<<<<< HEAD
               <TableCell colSpan={isAdmin ? 4 : 3} align="center">
                 No se encontraron productos
               </TableCell>
@@ -181,3 +258,34 @@ export default function ProductList({ onEdit }) {
     </Paper>
   );
 }
+=======
+              <TableCell><strong>Nombre</strong></TableCell>
+              <TableCell><strong>Categoría</strong></TableCell>
+              <TableCell><strong>Stock</strong></TableCell>
+              {isAdmin && <TableCell><strong>Acciones</strong></TableCell>}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {filteredProducts.map((p) => {
+              return (
+                <TableRow key={p._id || p.id || someUniqueValue}> 
+                  <TableCell>{p.nameProduct || "-"}</TableCell>
+                  <TableCell>{p.category || "-"}</TableCell>
+                  <TableCell>{p.stock || "-"}</TableCell>
+                  {isAdmin && p.id?.length === 24 && (
+                    <TableCell>
+                      <Button onClick={() => navigate(`/productos/:${p.id}`)}>Editar</Button>
+                      <Button color="error" onClick={() => handleDelete(p.id)}>
+                        Eliminar
+                      </Button>
+                    </TableCell>
+                  )}
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </Paper>
+    );
+}
+>>>>>>> 34e0fd5c9b5d8c4ac5065f3e1a957fbd10e64259

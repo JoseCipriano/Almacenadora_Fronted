@@ -61,10 +61,22 @@ import { useLogin } from '../shared/hooks'
         }));
     }
 
-    const handleLogin = (event) => {
+    const handleLogin = async (event) => {
         event.preventDefault();
-        login(formState.email.value, formState.password.value);
-
+        try {
+            const response = await login(formState.email.value, formState.password.value);
+        
+            if (response && response.token) {
+                const userData = {
+                    token: response.token,
+                    ...(response.user && { user: response.user })
+                };
+                localStorage.setItem('user', JSON.stringify(userData));
+                console.log(response.token)
+            }
+        } catch (error) {
+            console.error('Error during login:', error);
+        }
     }
 
     const isSubmitButtonDisabled = isLoading || !formState.email.isValid || !formState.password.isValid;

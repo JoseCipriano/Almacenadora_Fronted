@@ -1,5 +1,5 @@
 import { Table, TableHead, TableRow, TableCell, TableBody, Button, Paper, Typography, TextField, Box} from "@mui/material"
-import React, { useEffect, useState} from "react"
+import { useEffect, useState} from "react"
 import { useNavigate } from "react-router-dom"
 import { deleteProduct, getProducts } from "../../services/product-service"
 
@@ -24,20 +24,26 @@ export default function ProductList(){
         
         }, []);
 
-        useEffect(() =>{
-            if (searchTerm){
-                const results = products.filter((product) =>
-                    product.name.toLowerCase().inCludes(searchTerm.toLowerCase()) ||
-                    product.category.toLowerCase().inCludes(searchTerm.toLowerCase())
+        useEffect(() => {
+            if (searchTerm.trim()) {  //
+              const searchTermLower = searchTerm.toLowerCase();
+              const results = products.filter(product => {
+                if (!product) return false
+                return (
+                  (product.nameProduct && product.name.toLowerCase().includes(searchTermLower)) &&
+                  (product.category && product.category.toLowerCase().includes(searchTermLower)) &&
+                  (product.stock && product.price.toString().includes(searchTerm))
                 );
-                setFilterProducts(results);
-            } else{
-                setFilterProducts(products)
+              });
+              
+              setFilterProducts(results);
+            } else {
+              setFilterProducts(products); 
             }
         }, [searchTerm, products]);
 
         const handleDelete =async (id) => {
-            const confirm = window.confirm("Quires eliminar este producto?");
+            const confirm = window.confirm("Quieres eliminar este producto?");
             if(!confirm) return;
             try {
                 await deleteProduct(id);
@@ -94,19 +100,17 @@ export default function ProductList(){
             <TableRow>
               <TableCell><strong>Nombre</strong></TableCell>
               <TableCell><strong>Categoría</strong></TableCell>
-              <TableCell><strong>Precio</strong></TableCell>
+              <TableCell><strong>Stock</strong></TableCell>
               {isAdmin && <TableCell><strong>Acciones</strong></TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
             {filteredProducts.map((p) => {
-              if (!p || !p.id) return null;
-  
               return (
-                <TableRow key={p.id}>
-                  <TableCell>{p.name || "-"}</TableCell>
+                <TableRow key={p._id || p.id || someUniqueValue}> 
+                  <TableCell>{p.nameProduct || "-"}</TableCell>
                   <TableCell>{p.category || "-"}</TableCell>
-                  <TableCell>{p.price || "-"}</TableCell>
+                  <TableCell>{p.stock || "-"}</TableCell>
                   {isAdmin && p.id?.length === 24 && (
                     <TableCell>
                       <Button onClick={() => navigate(`/productos/:${p.id}`)}>Editar</Button>
@@ -121,15 +125,5 @@ export default function ProductList(){
           </TableBody>
         </Table>
       </Paper>
-
-
-
     );
-
-
-
-
-
-
 }
-
